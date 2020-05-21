@@ -1,0 +1,19 @@
+/* global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --rabbit-green: #2bc48c;
+    --rabbit-orange: #eb7434;
+    --rabbit-white: #e8ebea;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--rabbit-white);
+}
+
+/* header */
