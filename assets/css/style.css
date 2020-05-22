@@ -6,7 +6,7 @@
 }
 
 :root {
-    --rabbit-green: #2bc48c;
+    --rabbit-green: #31b5b1;
     --rabbit-orange: #eb7434;
     --rabbit-white: #e8ebea;
 }
@@ -67,4 +67,15 @@ main {
 .main-box.center p {
     font-size: 25px;
     margin: 0 200px 50px 200px;
+}
+
+.main-box.bottom button {
+    font-size: 20px;
+    padding: 10px 20px;
+    border: none;
+    color: var(--rabbit-orange);
+    background: var(--rabbit-green);
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+    text-shadow: 1px 1px 2px black;
 }
