@@ -28,12 +28,20 @@ header a {
 
 }
 
-header h2 a  {
-    color: black;
+.header-box.left a  {
+    color: var(--rabbit-green);
 }
 
-header h1 a {
+.header-box.left a:hover {
     color: var(--rabbit-orange);
+}
+
+.header-box.center a {
+    color: var(--rabbit-orange);
+}
+
+.header-box.center a:hover::after {
+    content: "🐰";
 }
 
 header h1 a span {
@@ -89,3 +97,18 @@ main {
     box-shadow: 0 0px rgba(0, 0, 0, 1);
 }
 
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--rabbit-green);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    height: 5rem;
+    padding: 2rem;
+}
+
+footer p {
+    color: var(--rabbit-orange);
+}
