@@ -4,6 +4,7 @@ var testArr = [
     {q: "Question 3", 1: "Answer 1", 2: "Answer 2", 3: "Answer 3", 4: "Answer 4"}, 
     {q: "Question 4", 1: "Answer 1", 2: "Answer 2", 3: "Answer 3", 4: "Answer 4"}
 ]
+var timeLeft = 25;
 var mainBoxTopEl = document.querySelector(".main-box.top");
 var mainBoxCenterEl = document.querySelector(".main-box.center");
 var mainBoxBottomEl = document.querySelector(".main-box.bottom");
@@ -47,17 +48,20 @@ var firstQuestionHandler = function(event) {
         pageContentEl.appendChild(newMainBoxTopEl);
         pageContentEl.appendChild(newMainBoxCenterEl);
         pageContentEl.appendChild(newMainBoxBottomEl);
+
+        // run timerHandler
+        timerHandler();
     }
 };
 
 var timerHandler = function(event) {
-    var targetEl = event.target;
-    var timeLeft = 25;
     var timerInterval = setInterval(function() {
-        if (targetEl.matches(".btn.start")) {
-            timerInterval--;
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+        if (timeLeft === 0) {
+            clearInterval(timerInterval);
         }
-    })
+    }, 1000);
 };
 
 pageContentEl.addEventListener("click", firstQuestionHandler);
