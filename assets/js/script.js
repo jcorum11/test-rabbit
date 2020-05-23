@@ -7,10 +7,11 @@ var testArr = [
 var mainBoxTopEl = document.querySelector(".main-box.top");
 var mainBoxCenterEl = document.querySelector(".main-box.center");
 var mainBoxBottomEl = document.querySelector(".main-box.bottom");
-var pageContentEl = document.querySelector("#page-content")
+var pageContentEl = document.querySelector("#page-content");
+var timerEl = document.querySelector("#timer");
 
-var startTest = function(event) {
-    
+// first question
+var firstQuestionHandler = function(event) {
     var targetEl = event.target;
     if (targetEl.matches(".btn.start")) {
         // remove elements from main-box top, center, and bottom and add new empty divs with styles
@@ -49,4 +50,14 @@ var startTest = function(event) {
     }
 };
 
-pageContentEl.addEventListener("click", startTest);
+var timerHandler = function(event) {
+    var targetEl = event.target;
+    var timeLeft = 25;
+    var timerInterval = setInterval(function() {
+        if (targetEl.matches(".btn.start")) {
+            timerInterval--;
+        }
+    })
+};
+
+pageContentEl.addEventListener("click", firstQuestionHandler);
