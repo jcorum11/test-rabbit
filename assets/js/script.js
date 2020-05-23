@@ -9,14 +9,10 @@ var mainBoxCenterEl = document.querySelector(".main-box.center");
 var mainBoxBottomEl = document.querySelector(".main-box.bottom");
 var pageContentEl = document.querySelector("#page-content")
 
-var answerClick = function() {
-    
-}
-
 var startTest = function(event) {
     
     var targetEl = event.target;
-    if (targetEl.matches(".btn")) {
+    if (targetEl.matches(".btn.start")) {
         // remove elements from main-box top, center, and bottom and add new empty divs with styles
         question1 = testArr[0]
         mainBoxTopEl.remove();
@@ -41,7 +37,7 @@ var startTest = function(event) {
             var answerButtonEl = document.createElement("button");
             var buttonContainerEl = document.createElement("div");
             answerButtonEl.textContent = testArr[0][i];
-            answerButtonEl.className = "btn";
+            answerButtonEl.className = "btn answer";
             buttonContainerEl.appendChild(answerButtonEl);
             newMainBoxCenterEl.appendChild(buttonContainerEl);
         }
