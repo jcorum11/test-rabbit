@@ -13,29 +13,57 @@ var mainBoxBottomEl = document.querySelector(".main-box.bottom");
 var questionEl = document.querySelector("#question")
 var timerEl = document.querySelector("#timer");
 
-
-
-var contentHandler = function() {
-    
-    clearDivContent();
-    
-    // change header
-    var questionObj = testArr[id];
-    var questionStr = questionObj.q
-    questionEl.textContent = questionStr;
-    mainBoxTopEl.appendChild(questionEl);
-
-    // add questions to center as buttons. add styles to buttons and divs. 
-    for (var i = 0; i <= 3; i++) {
-        var answerButtonEl = document.createElement("button");
-        answerButtonEl.textContent = testArr[id][i];
-        answerButtonEl.className = "btn answer";
-        answerButtonEl.setAttribute("style", "display: block;");
-        answerButtonEl.setAttribute("answer-number", Object.keys(testArr[id])[i]);
-        mainBoxCenterEl.appendChild(answerButtonEl);
+var answerHandler = function(event) {
+    var targetEl = event.target;
+    if (targetEl.matches(".btn.answer")) {
+        var answer = testArr[id - 1].a;
+        var answerAttr = parseInt(targetEl.getAttribute("answer-number"));
+        if (answer === answerAttr) {
+            var answerCorrectEl = document.createElement("h2");
+            answerCorrectEl.textContent = "Correct!";
+            var nextButtonEl = document.createElement("button");
+            nextButtonEl.textContent = "Next";
+            nextButtonEl.className = "btn next";
+            mainBoxBottomEl.appendChild(answerCorrectEl);
+            mainBoxBottomEl.appendChild(nextButtonEl);
+            console.log(mainBoxBottomEl);
+            timeLeft += 5;
+        }
+        else {
+            timeLeft -= 5;
+        }
     }
-    timerHandler();
-    id++
+};
+
+
+
+var contentHandler = function(event) {
+    var targetEl = event.target
+    if (targetEl.matches(".btn")) {
+        if(!id) {
+            clearDivContent();
+            
+            // change header
+            var questionObj = testArr[id];
+            var questionStr = questionObj.q
+            questionEl.textContent = questionStr;
+            mainBoxTopEl.appendChild(questionEl);
+
+            // add questions to center as buttons. add styles to buttons and divs. 
+            for (var i = 0; i <= 3; i++) {
+                var answerButtonEl = document.createElement("button");
+                answerButtonEl.textContent = testArr[id][i];
+                answerButtonEl.className = "btn answer";
+                answerButtonEl.setAttribute("style", "display: block;");
+                answerButtonEl.setAttribute("answer-number", Object.keys(testArr[id])[i]);
+                mainBoxCenterEl.appendChild(answerButtonEl);
+            }
+            timerHandler();
+        }
+        else {
+            id++
+        }
+    }
 }
 
 var clearDivContent = function() {
@@ -64,19 +92,7 @@ var timerHandler = function() {
     }
 };
 
-var answerHandler = function(event) {
-    var targetEl = event.target;
-    if (targetEl.matches(".btn.answer")) {
-        var answer = testArr[id - 1].a;
-        var answerAttr = parseInt(targetEl.getAttribute("answer-number"));
-        if (answer === answerAttr) {
-            timeLeft += 5;
-        }
-        else {
-            timeLeft -= 5;
-        }
-    }
-};
+
 
 pageContentEl.addEventListener("click", answerHandler);
-pageContentEl.addEventListener("click", contentHandler);
+pageContentEl.addEventListener("click", nextButtonHandler);
