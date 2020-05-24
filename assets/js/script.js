@@ -13,13 +13,18 @@ var mainBoxBottomEl = document.querySelector(".main-box.bottom");
 var questionEl = document.querySelector("#question")
 var timerEl = document.querySelector("#timer");
 
-var buttonHandler = function(event) {
+var startHandler = function(event) {
     var targetEl = event.target;
     if (targetEl.matches(".btn.start")) {
+        timerHandler();
         contentHandler();
     }
-    else if (targetEl.matches(".btn.answer")) {
-        var answer = testArr[id - 1].a;
+}
+
+var questionHandler = function(event) {
+    var targetEl = event.target;
+    if (targetEl.matches(".btn.answer")) {
+        var answer = testArr[id].a;
         var answerAttr = parseInt(targetEl.getAttribute("answer-number"));
         if (answer === answerAttr) {
             var answerCorrectEl = document.createElement("h2");
@@ -30,7 +35,10 @@ var buttonHandler = function(event) {
             mainBoxBottomEl.appendChild(answerCorrectEl);
             mainBoxBottomEl.appendChild(nextButtonEl);
             timeLeft += 5;
-            pageContentEl.addEventListener("click", nextButtonHandler);
+            nextButtonEl.textContent = "Next";
+            nextButtonEl.className = "btn next";
+            mainBoxBottomEl.appendChild(nextButtonEl);
+            id++
         }
         else {
             var answerCorrectEl = document.createElement("h2");
@@ -38,7 +46,10 @@ var buttonHandler = function(event) {
             var nextButtonEl = document.createElement("button");
             mainBoxBottomEl.appendChild(answerCorrectEl);
             timeLeft -= 5;
-            pageContentEl.addEventListener("click", nextButtonHandler);
+            nextButtonEl.textContent = "Next";
+            nextButtonEl.className = "btn next";
+            mainBoxBottomEl.appendChild(nextButtonEl);
+            id++
         }
     }
 };
@@ -46,10 +57,7 @@ var buttonHandler = function(event) {
 var nextButtonHandler = function(event) {
     var targetEl = event.target;
     if (targetEl.matches(".btn.next")) {
-        nextButtonEl.textContent = "Next";
-        nextButtonEl.className = "btn next";
-        mainBoxBottomEl.appendChild(nextButtonEl);
-        contentHandler();
+        contentHandler()
     }
 }
 
@@ -70,12 +78,6 @@ var contentHandler = function() {
         answerButtonEl.setAttribute("style", "display: block;");
         answerButtonEl.setAttribute("answer-number", Object.keys(testArr[id])[i]);
         mainBoxCenterEl.appendChild(answerButtonEl);
-    }
-    if (!id) {
-    timerHandler();
-    }
-    else {
-        id++
     }
 }
 
@@ -105,5 +107,6 @@ var timerHandler = function() {
     }
 };
 
-pageContentEl.addEventListener("click", buttonHandler);
-
+pageContentEl.addEventListener("click", startHandler);
+pageContentEl.addEventListener("click", questionHandler);
+pageContentEl.addEventListener("click", nextButtonHandler);
