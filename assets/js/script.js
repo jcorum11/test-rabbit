@@ -13,9 +13,12 @@ var mainBoxBottomEl = document.querySelector(".main-box.bottom");
 var questionEl = document.querySelector("#question")
 var timerEl = document.querySelector("#timer");
 
-var answerHandler = function(event) {
+var buttonHandler = function(event) {
     var targetEl = event.target;
-    if (targetEl.matches(".btn.answer")) {
+    if (targetEl.matches(".btn.start")) {
+        contentHandler();
+    }
+    else if (targetEl.matches(".btn.answer")) {
         var answer = testArr[id - 1].a;
         var answerAttr = parseInt(targetEl.getAttribute("answer-number"));
         if (answer === answerAttr) {
@@ -26,43 +29,53 @@ var answerHandler = function(event) {
             nextButtonEl.className = "btn next";
             mainBoxBottomEl.appendChild(answerCorrectEl);
             mainBoxBottomEl.appendChild(nextButtonEl);
-            console.log(mainBoxBottomEl);
             timeLeft += 5;
+            pageContentEl.addEventListener("click", nextButtonHandler);
         }
         else {
+            var answerCorrectEl = document.createElement("h2");
+            answerCorrectEl.textContent = "Incorrect";
+            var nextButtonEl = document.createElement("button");
+            mainBoxBottomEl.appendChild(answerCorrectEl);
             timeLeft -= 5;
+            pageContentEl.addEventListener("click", nextButtonHandler);
         }
     }
 };
 
+var nextButtonHandler = function(event) {
+    var targetEl = event.target;
+    if (targetEl.matches(".btn.next")) {
+        nextButtonEl.textContent = "Next";
+        nextButtonEl.className = "btn next";
+        mainBoxBottomEl.appendChild(nextButtonEl);
+        contentHandler();
+    }
+}
 
+var contentHandler = function() {
+    clearDivContent();
+    
+    // change header
+    var questionObj = testArr[id];
+    var questionStr = questionObj.q
+    questionEl.textContent = questionStr;
+    mainBoxTopEl.appendChild(questionEl);
 
-var contentHandler = function(event) {
-    var targetEl = event.target
-    if (targetEl.matches(".btn")) {
-        if(!id) {
-            clearDivContent();
-            
-            // change header
-            var questionObj = testArr[id];
-            var questionStr = questionObj.q
-            questionEl.textContent = questionStr;
-            mainBoxTopEl.appendChild(questionEl);
-
-            // add questions to center as buttons. add styles to buttons and divs. 
-            for (var i = 0; i <= 3; i++) {
-                var answerButtonEl = document.createElement("button");
-                answerButtonEl.textContent = testArr[id][i];
-                answerButtonEl.className = "btn answer";
-                answerButtonEl.setAttribute("style", "display: block;");
-                answerButtonEl.setAttribute("answer-number", Object.keys(testArr[id])[i]);
-                mainBoxCenterEl.appendChild(answerButtonEl);
-            }
-            timerHandler();
-        }
-        else {
-            id++
-        }
+    // add questions to center as buttons. add styles to buttons and divs. 
+    for (var i = 0; i <= 3; i++) {
+        var answerButtonEl = document.createElement("button");
+        answerButtonEl.textContent = testArr[id][i];
+        answerButtonEl.className = "btn answer";
+        answerButtonEl.setAttribute("style", "display: block;");
+        answerButtonEl.setAttribute("answer-number", Object.keys(testArr[id])[i]);
+        mainBoxCenterEl.appendChild(answerButtonEl);
+    }
+    if (!id) {
+    timerHandler();
+    }
+    else {
+        id++
     }
 }
 
@@ -92,7 +105,5 @@ var timerHandler = function() {
     }
 };
 
+pageContentEl.addEventListener("click", buttonHandler);
 
-
-pageContentEl.addEventListener("click", answerHandler);
-pageContentEl.addEventListener("click", nextButtonHandler);
