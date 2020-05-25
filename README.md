@@ -10,10 +10,11 @@ a springy coding challenge
 * JavaScript
 
 ## Website
-https://lernantino.github.io/run-buddy/
+https://jcorum11.github.io/test-rabbit/
 
 ## Contribution
 Made with ❤️ by Jake
 
 ### ©️2019 Run Buddy, Inc 
 
+![Test Rabbit Website](/assets/images/test-rabbit.png
