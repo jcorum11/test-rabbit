@@ -1,35 +1,37 @@
 var testArr = [
-    {q: "Question 1", a: 0, 0: "Answer 1", 1: "Answer 2", 2: "Answer 3", 3: "Answer 4"}, 
-    {q: "Question 2", a: 1, 0: "Answer 1", 1: "Answer 2", 2: "Answer 3", 3: "Answer 4"}, 
-    {q: "Question 3", a: 2, 0: "Answer 1", 1: "Answer 2", 2: "Answer 3", 3: "Answer 4"}, 
-    {q: "Question 4", a: 3, 0: "Answer 1", 1: "Answer 2", 2: "Answer 3", 3: "Answer 4"}
+    {q: "What are variables used for in JavaScript Programs?", a: 0, 0: "A. Storing numbers, dates, or other values", 1: "B. Varying randomly", 2: "C. Causing high-school algebra flashbacks", 3: "D. None of the above"}, 
+    {q: "Which of the following is not considered a JavaScript operator?", a: 1, 0: "A. new", 1: "B. this", 2: "C. delete", 3: "D. typeof"}, 
+    {q: "Which of the following is the structure of an if statement?", a: 2, 0: "A. if (conditional expression is true) thenexecute this codeend if", 1: "B. if (conditional expression is true)execute this codeend if", 2: "C. if (conditional expression is true)   {then execute this code>->}", 3: "D. if (conditional expression is true) then {execute this code}"}, 
+    {q: "Scripting language are", a: 0, 0: "A. High Level Programming language", 1: "B. Assembly Level programming language", 2: "C. Machine level programming language", 3: "D. None of the above"}
 ]
 var id = 0
-var timeLeft = 1;
+var timeLeft = 25;
 var score = 0
+var notClicked = true;
+var finished = false;
 var pageContentEl = document.querySelector("#page-content");
 var mainBoxTopEl = document.querySelector(".main-box.top");
 var mainBoxCenterEl = document.querySelector(".main-box.center");
 var mainBoxBottomEl = document.querySelector(".main-box.bottom");
 var questionEl = document.querySelector("#question")
 var timerEl = document.querySelector("#timer");
+var headContentEl = document.querySelector("#head-content")
 
 var startHandler = function(event) {
     var targetEl = event.target;
+    finished = false;
     if (targetEl.matches(".btn.start")) {
         timerHandler();
         contentHandler();
     }
 }
 
-
-
 var questionHandler = function(event) {
     var targetEl = event.target;
     if (targetEl.matches(".btn.answer")) {
         var answer = testArr[id].a;
         var answerAttr = parseInt(targetEl.getAttribute("answer-number"));
-        if (answer === answerAttr) {
+        if (answer === answerAttr && notClicked) {
             var answerCorrectEl = document.createElement("h2");
             answerCorrectEl.textContent = "Correct!";
             var nextButtonEl = document.createElement("button");
@@ -44,7 +46,7 @@ var questionHandler = function(event) {
             score += 5;
             id++;
         }
-        else {
+        else if (answer !== answerAttr && notClicked) {
             var answerCorrectEl = document.createElement("h2");
             answerCorrectEl.textContent = "Incorrect";
             var nextButtonEl = document.createElement("button");
@@ -55,6 +57,7 @@ var questionHandler = function(event) {
             mainBoxBottomEl.appendChild(nextButtonEl);
             id++;
         }
+        notClicked = false;
     }
 };
 
@@ -78,6 +81,7 @@ var scorePageContentHandler = function(quizStatus) {
     textInputEl.id = "initials-form"
     textInputEl.name = "text-input";
     textInputEl.placeholder = "Your Initials";
+    textInputEl.className = "form-input"
     var submitButtonEl = document.createElement("button");
     submitButtonEl.className = "btn submit";
     submitButtonEl.textContent = "Submit";
@@ -90,7 +94,7 @@ var scorePageContentHandler = function(quizStatus) {
 var contentHandler = function() {
     if (testArr[id] === 0 || testArr[id]) {
         clearDivContent();
-    
+        notClicked = true;
         // change header
         var questionObj = testArr[id];
         var questionStr = questionObj.q
@@ -108,6 +112,7 @@ var contentHandler = function() {
         }
     }
     else if (testArr[id] === undefined || timeLeft <= 0) {
+        finished = true;
         scorePageContentHandler("Quiz Complete!");
     }
     
@@ -115,6 +120,7 @@ var contentHandler = function() {
 
 var clearDivContent = function() {
     // remove elements from main-box top, center, and bottom and add new empty divs with styles
+    notClicked = true;
     while (mainBoxTopEl.firstChild) {
         mainBoxTopEl.removeChild(mainBoxTopEl.firstChild);
     }
@@ -134,6 +140,9 @@ var timerHandler = function() {
             timerEl.textContent = timeLeft;
             if (timeLeft === 0) {
                 scorePageContentHandler("You ran out of time!")
+                clearInterval(timerInterval);
+            }
+            else if (finished) {
                 clearInterval(timerInterval);
             }
         }, 1000);
@@ -156,6 +165,13 @@ var formHandler = function() {
     highScoreHandler();
 }
 
+var viewHighScores = function(event) {
+    var targetEl = event.target;
+    if (targetEl.matches("#high-score-tag")) {
+        highScoreHandler();
+    }
+}
+
 var highScoreHandler = function() {
     clearDivContent();
     var h1El = document.createElement("h1");
@@ -170,9 +186,9 @@ var highScoreHandler = function() {
     }
     for (var i = 0; i < scores.length; i++) {
         userData = scores[i];
-        var h3El = document.createElement("h3");
-        h3El.textContent = `${userData.initials} ${userData.score}`;
-        mainBoxCenterEl.appendChild(h3El);
+        var h2El = document.createElement("h2");
+        h2El.textContent = `${i + 1}. ${userData.initials} - ${userData.score}`;
+        mainBoxCenterEl.appendChild(h2El);
     }
     var restartButtonEl = document.createElement("button");
     restartButtonEl.textContent = "Restart";
@@ -187,3 +203,5 @@ pageContentEl.addEventListener("click", startHandler);
 pageContentEl.addEventListener("click", questionHandler);
 pageContentEl.addEventListener("click", nextButtonHandler);
 pageContentEl.addEventListener("submit", formHandler);
+headContentEl.addEventListener("click", viewHighScores);
+
