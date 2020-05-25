@@ -151,7 +151,10 @@ var timerHandler = function() {
 
 var formHandler = function() {
     event.preventDefault();
-    userInitials = document.querySelector("#initials-form").value.toUpperCase();
+    var userInitials = document.querySelector("#initials-form").value.toUpperCase();
+    while (userInitials.length < 2 || userInitials.length > 3) {
+        userInitials = prompt("You must put in your initials!").toUpperCase;
+    }
     var scores = localStorage.getItem("scores");
     if (!scores) {
         scores = [];
