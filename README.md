@@ -17,4 +17,4 @@ Made with ❤️ by Jake
 
 ### ©️2019 Run Buddy, Inc 
 
-![Test Rabbit Website](/assets/images/test-rabbit.png
+![Test Rabbit Website](/assets/images/test-rabbit.png)
